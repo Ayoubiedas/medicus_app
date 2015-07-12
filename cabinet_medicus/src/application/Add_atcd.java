@@ -1,5 +1,6 @@
 package application;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -53,8 +54,8 @@ public class Add_atcd extends Stage {
             		nw_atcd.setType(atcd_type.getValue());
             		// covert datepicker to date
             		LocalDate localDate = atcd_date.getValue();
-            		Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-            		Date date = Date.from(instant);
+            		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            		//System.out.println(date);
             		// end conversion
             		nw_atcd.setDate(date);
             		nw_atcd.setContent(atcd_content.getText());

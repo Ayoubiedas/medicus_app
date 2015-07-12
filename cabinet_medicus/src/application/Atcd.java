@@ -2,6 +2,7 @@ package application;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ public class Atcd {
 	private String type;
 	private Date date;
 	private String content;
+	private String str_from_date;
 	
 	public Atcd()
 	{
@@ -64,9 +66,12 @@ public class Atcd {
 				temp.id_patient = id_patient;
 				temp.label = rs.getString("label");
 				temp.type = rs.getString("type");
-				SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy");
-				temp.date = formatter.parse(rs.getString("date"));
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				Date date_temp = formatter.parse(rs.getString("date"));
+				temp.date = date_temp;// formatter.format(date)
+				temp.str_from_date = formatter.format(date_temp);
 				temp.content = rs.getString("content");
+				System.out.println(temp);
 				
 				all_result_tab.add(i,temp);
 				i++;
@@ -94,7 +99,12 @@ public class Atcd {
 			if(stmt == null)
 				stmt = Db_manage.c.createStatement();
 			
-			sql = "INSERT INTO antcdent(id_patient, label, type, date, content ) VALUES("+id_patient+", '"+label+"', '"+type+"', '"+date+"', '"+content+"')"; 
+			// convert date to string
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			String reportDate = df.format(date.getTime());
+			// end convert date to string
+			
+			sql = "INSERT INTO antcdent(id_patient, label, type, date, content ) VALUES("+id_patient+", '"+label+"', '"+type+"', '"+reportDate+"', '"+content+"')"; 
 			
 			stmt.executeUpdate(sql);
 		    stmt.close();
@@ -139,11 +149,20 @@ public class Atcd {
 		this.content = content;
 	}
 
+	public String getStr_from_date() {
+		return str_from_date;
+	}
+
+	public void setStr_from_date(String str_from_date) {
+		this.str_from_date = str_from_date;
+	}
+
 	@Override
 	public String toString() {
 		return "Atcd [id_atcd=" + id_atcd + ", id_patient=" + id_patient
 				+ ", label=" + label + ", type=" + type + ", date=" + date
-				+ ", content=" + content + "]";
+				+ ", content=" + content + ", str_from_date=" + str_from_date
+				+ "]";
 	}
 
 }

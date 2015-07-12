@@ -82,8 +82,6 @@ public class Patient_detail extends Stage {
 							File file = fileChooser.showOpenDialog(window);
 	                        if (file != null) {
 	                        	try {
-	                               
-	                                System.out.println(file);
 	                                desktop.open(file);
 	                            } catch (IOException ex) {
 	                                Logger.getLogger(Patient_detail.class.getName()).log(
@@ -259,13 +257,12 @@ public class Patient_detail extends Stage {
 			ObservableList<Atcd> list_atcd = FXCollections.observableArrayList(new_atcd.load_antcdent());
 			
 			table_atcd.setItems(list_atcd);
-			System.out.println(list_atcd);
 			
 			TableColumn<Atcd, String> labelColumn = new TableColumn<Atcd, String>("Libellé");
 			TableColumn<Atcd, Date> dateColumn = new TableColumn<Atcd, Date>("date");
 			
 			labelColumn.setCellValueFactory(new PropertyValueFactory<Atcd, String>("label"));
-			dateColumn.setCellValueFactory(new PropertyValueFactory<Atcd, Date>("date"));
+			dateColumn.setCellValueFactory(new PropertyValueFactory<Atcd, Date>("str_from_date"));
 		
 
 			table_atcd.getColumns().addAll(labelColumn, dateColumn);
