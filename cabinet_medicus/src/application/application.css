@@ -1,0 +1,11 @@
+.vbox {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.date-picker, .text-field, .combo-box
+{
+	-fx-pref-width:500;
+	-fx-max-width:500;
+	
+}
