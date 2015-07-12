@@ -1,5 +1,6 @@
 package application;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -24,6 +25,98 @@ import javafx.stage.Stage;
 public class Add_atcd extends Stage {
 	
 	private Integer id_patient_detailed;
+	
+	public Add_atcd(Atcd atcd) {
+		try {
+						
+			GridPane grid = new GridPane();
+	        
+	        grid.setHgap(10);
+	        grid.setVgap(10);
+	        grid.setPadding(new Insets(0, 10, 0, 10));
+	       
+	        
+	        Label lbs[];
+	        TextField input = new TextField(atcd.getLabel());
+	        ComboBox<String> atcd_type = new ComboBox<String>(); atcd_type.setValue(atcd.getType());
+	        LocalDate date = atcd.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	        DatePicker atcd_date = new DatePicker(date);
+	        TextArea atcd_content = new TextArea(atcd.getContent());
+	        Button save_button = new Button("Enregistrer");
+	        
+	        save_button.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                	
+                	Atcd nw_atcd = new Atcd();
+                	nw_atcd.setId_atcd(atcd.getId_atcd());
+            		nw_atcd.setId_patient(id_patient_detailed);
+            		nw_atcd.setLabel(input.getText());
+            		nw_atcd.setType(atcd_type.getValue());
+            		// covert datepicker to date
+            		LocalDate localDate = atcd_date.getValue();
+            		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            		//System.out.println(date);
+            		// end conversion
+            		nw_atcd.setDate(date);
+            		nw_atcd.setContent(atcd_content.getText());
+            		
+            		nw_atcd.update_antcd();
+                }
+
+            });
+	        
+	        String types[]=new String[]{
+	    	        "Medical",
+	    	        "Chirurgical",
+	    	        "Obstétrical",
+	    	        "Familial",
+	    	};
+	        
+	        atcd_type.getItems().addAll(types);
+	             
+	  
+	        String labels_list[]=new String[]{
+	        "Libellé",
+	        "Type",
+	        "Date",
+	        "Antécédent",
+	        };
+	        
+	        int labels_list_lenght = labels_list.length; 
+	        
+	        lbs=new Label[labels_list_lenght];
+	        
+	        
+	        
+	        for (int i = 0; i < labels_list_lenght; i++) {
+	            lbs[i]=new Label(labels_list[i]);
+	            grid.add(lbs[i], 0, i);
+	        }
+	        
+	        
+	        grid.add(input, 1, 0);
+	        grid.add(atcd_type, 1, 1);
+	        grid.add(atcd_date, 1, 2);
+	        grid.add(atcd_content, 1, 3);
+	        grid.add(save_button, 1, 4);
+	        
+	        // styling items
+	        grid.setStyle("-fx-padding:10;");
+			// end styling items
+	        
+	        
+	        
+			Scene scene = new Scene(grid,600,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			setScene(scene);
+			show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	public Add_atcd(Integer id_pt) {
 		try {

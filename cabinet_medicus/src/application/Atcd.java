@@ -71,7 +71,6 @@ public class Atcd {
 				temp.date = date_temp;// formatter.format(date)
 				temp.str_from_date = formatter.format(date_temp);
 				temp.content = rs.getString("content");
-				System.out.println(temp);
 				
 				all_result_tab.add(i,temp);
 				i++;
@@ -115,6 +114,32 @@ public class Atcd {
 			
 		}
 		
+	}
+	
+	public void update_antcd()
+	{
+		Statement stmt = null;
+		String sql = "";
+		try
+		{
+			if(stmt == null)
+				stmt = Db_manage.c.createStatement();
+			
+			// convert date to string
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			String reportDate = df.format(date.getTime());
+			// end convert date to string
+			
+			sql = "UPDATE antcdent SET label = '"+label+"', type = '"+type+"', date = '"+reportDate+"', content = '"+content+"' WHERE id_atcd = '"+id_atcd+"'"; 
+			
+			stmt.executeUpdate(sql);
+		    stmt.close();
+			
+		}catch (Exception e)
+		{
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			
+		}
 	}
 	
 	public int getId_atcd() {

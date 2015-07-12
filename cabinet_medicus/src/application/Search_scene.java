@@ -168,5 +168,9 @@ public class Search_scene extends Application {
 		new Add_atcd(id_pt);
 	}
 
+	public static void load_atcd(Atcd atcd)
+	{
+		new Add_atcd(atcd);
+	}
 
 }

@@ -25,6 +25,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -269,6 +270,17 @@ public class Patient_detail extends Stage {
 			table_atcd.setPrefWidth(450);
 			table_atcd.setPrefHeight(300);
 			table_atcd.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			
+			table_atcd.setRowFactory( tv -> {
+			    TableRow<Atcd> row = new TableRow<>();
+			    row.setOnMouseClicked(event -> {
+			        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+			        	Atcd atcd_selected = row.getItem();
+			            Search_scene.load_atcd(atcd_selected);
+			        }
+			    });
+			    return row ;
+			});
 			// end create table
 			
 			Button new_atcd_button = new Button("Ajouter un antécédent");
@@ -280,6 +292,8 @@ public class Patient_detail extends Stage {
                 	Search_scene.add_new_atcd(id_patient_detailed);
                 }
             });
+			
+			new_atcd_button.getStyleClass().add("atcd-add-button");
 			
 			detail_atcd_pan.getChildren().add(new_atcd_button);
 			detail_atcd_pan.getChildren().add(table_atcd);
