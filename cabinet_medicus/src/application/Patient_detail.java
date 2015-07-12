@@ -47,6 +47,7 @@ public class Patient_detail extends Stage {
 	@SuppressWarnings("unchecked")
 	public Patient_detail(Patient searched_patient) {
 		try {
+			// helloo github
 			
 			TabPane tabPane = new TabPane();
 			tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
