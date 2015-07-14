@@ -1,20 +1,24 @@
 package application;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+
 public class Db_manage {
 	
 	static Connection c = null;
+	private static String currentDir = new File("").getAbsolutePath();
 	
 	public static Connection make_connection(){
 	
     try {
+    	    	
       Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:C:\\UsersAyb\\git\\cabinet_medicus\\medicus_db.sqlite");
+      c = DriverManager.getConnection("jdbc:sqlite:"+currentDir+"\\medicus_db.sqlite");
       
     } catch ( Exception e ) {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
