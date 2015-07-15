@@ -18,6 +18,7 @@ public class Db_manage {
     try {
     	    	
       Class.forName("org.sqlite.JDBC");
+      //System.out.println(currentDir);
       c = DriverManager.getConnection("jdbc:sqlite:"+currentDir+"\\medicus_db.sqlite");
       
     } catch ( Exception e ) {
