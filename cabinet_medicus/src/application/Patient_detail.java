@@ -192,6 +192,7 @@ public class Patient_detail extends Stage {
             tab.setContent(root_info_perso);
 			// end onglet info perso
 			
+            // onglet antecedent
 			Tab tab_2 = new Tab();
 			tab_2.setText("Antecedent");
 			
@@ -298,15 +299,19 @@ public class Patient_detail extends Stage {
 			detail_atcd_pan.getChildren().add(new_atcd_button);
 			detail_atcd_pan.getChildren().add(table_atcd);
 			
+			// end onglet antecedent
+			
 			Tab tab_3 = new Tab();
 			tab_3.setText("Consultations");
 			
 			Tab tab_4 = new Tab();
 			tab_4.setText("Prescriptions");
+			tab_4 = add_prescription_onglet();
 		
 			
 			tabPane.getTabs().add(tab);
 			tabPane.getTabs().add(tab_2);
+			tabPane.getTabs().add(tab_4);
 			
 			Scene scene = new Scene(tabPane,800,600);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -316,6 +321,108 @@ public class Patient_detail extends Stage {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Tab add_prescription_onglet()
+	{
+		// onglet antecedent
+					Tab tab_2 = new Tab();
+					tab_2.setText("Prescription");
+					
+					// add tree view
+					HBox container_pan = new HBox();
+					VBox tree_pan = new VBox();
+					VBox detail_atcd_pan = new VBox();
+					
+					TreeItem<String> tree_nodes[] = null; 
+					
+					String tree_items[]=new String[]{
+					        "Prescriptions",
+					        "Prescriptions textuelles",
+					        "Prescription d'analyse biologique ",
+					        "Prescriptions médicamenteuses"
+					        };
+					
+					int tree_items_lgth = tree_items.length;
+					tree_nodes =  new TreeItem[tree_items_lgth];
+					
+					for (int i = 0; i < tree_items_lgth; i++) 
+						tree_nodes[i]=new TreeItem<String>(tree_items[i]);
+			      
+			      
+					
+					tree_nodes[0].setExpanded(true);
+									
+					tree_nodes[0].getChildren().add(tree_nodes[1]);
+					tree_nodes[0].getChildren().add(tree_nodes[2]);
+					tree_nodes[0].getChildren().add(tree_nodes[3]);
+					
+					TreeView<String> treeView = new TreeView<String>(tree_nodes[0]);
+					
+					tree_pan.getChildren().add(treeView);
+					
+					container_pan.getChildren().add(tree_pan);
+					container_pan.getChildren().add(detail_atcd_pan);
+					
+					ScrollPane root_atcd = new ScrollPane();
+					
+					root_atcd.setContent(container_pan);
+					
+					tab_2.setContent(root_atcd);
+					
+					// end tree view
+					
+					// create table
+					
+					TableView<Prescription> table_atcd = new TableView<Prescription>();
+					
+					Prescription new_atcd = new Prescription(id_patient_detailed);
+					ObservableList<Prescription> list_atcd = FXCollections.observableArrayList(/*new_atcd.load_prescriptions()*/);
+					
+					table_atcd.setItems(list_atcd);
+					
+					TableColumn<Prescription, String> labelColumn = new TableColumn<Prescription, String>("Libellé");
+					TableColumn<Prescription, Date> dateColumn = new TableColumn<Prescription, Date>("date");
+					
+					labelColumn.setCellValueFactory(new PropertyValueFactory<Prescription, String>("label"));
+					dateColumn.setCellValueFactory(new PropertyValueFactory<Prescription, Date>("str_from_date"));
+				
+
+					table_atcd.getColumns().addAll(labelColumn, dateColumn);
+					table_atcd.setPrefWidth(450);
+					table_atcd.setPrefHeight(300);
+					table_atcd.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+					
+					table_atcd.setRowFactory( tv -> {
+					    TableRow<Prescription> row = new TableRow<>();
+					    row.setOnMouseClicked(event -> {
+					        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+					        	Prescription prescr_selected = row.getItem();
+					        	prescr_selected.add_prescription();
+					        }
+					    });
+					    return row ;
+					});
+					// end create table
+					
+					Button new_atcd_button = new Button("Nouvelle prescription");
+					
+					new_atcd_button.setOnAction(new EventHandler<ActionEvent>() {
+
+		                @Override
+		                public void handle(ActionEvent event) {
+		                	Prescription new_prescr = new Prescription(id_patient_detailed);
+		                	new_prescr.add_prescription();
+		                }
+		            });
+					
+					new_atcd_button.getStyleClass().add("atcd-add-button");
+					
+					detail_atcd_pan.getChildren().add(new_atcd_button);
+					detail_atcd_pan.getChildren().add(table_atcd);
+					return tab_2;
+					
+
 	}
 	
 	
